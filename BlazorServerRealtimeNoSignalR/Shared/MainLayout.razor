@@ -1,0 +1,36 @@
+﻿@inherits LayoutComponentBase
+@inject RealtimeService service
+
+<style>
+    body{
+        margin: 0;
+    }
+    .container{
+        perspective: 1000px;
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        height: 100vh;
+        wie: 100vw;
+    }
+    .rotate{
+        height: 300px;
+        width: 300px;
+        background-color: lightcoral;
+    }
+</style>
+
+<div class="container">
+    <div class="rotate" style="transform: rotateX(@(service.a + "deg")) rotateY(@(service.b + "deg"));">
+
+    </div>
+    <input type="range" @bind="service.a" @bind:event="oninput"/>
+    <input type="range" @bind="service.b" @bind:event="oninput"/>
+
+</div>
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        service.UpdateEvent += async () => await InvokeAsync(() => this.StateHasChanged());
+    }
+}
